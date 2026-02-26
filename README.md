@@ -6,3 +6,6 @@ This is my course repository for OIM3640.
 - Name: Joe Wei
 - Concentration: Not decided
 
+# My Projects
+
+- [First Project](./Projects/project1)
