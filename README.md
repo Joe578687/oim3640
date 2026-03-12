@@ -9,3 +9,5 @@ This is my course repository for OIM3640.
 # My Projects
 
 - [First Project](./Projects/project1)
+- [Second Project](Projects\project2)
+
