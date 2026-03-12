@@ -53,3 +53,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'is', 'was', 'are', 'be', 'been', 'have', 'has', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'of', 'it', 'you', 'i', 'me', 'my', 'we', 'he', 'she', 'that', 'this', 'your', 'with', 'from', 'as', 'by', 'if', 'not', 'so', 'also', 'been', 'no', 'yes'}
