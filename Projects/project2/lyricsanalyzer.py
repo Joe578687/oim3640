@@ -3,22 +3,24 @@ from collections import Counter
 import re
 
 def load_lyrics(data_folder="data"):
-    """Load all lyrics from the data folder."""
+    """Load lyrics from singalongsong.txt in the data folder."""
     all_lyrics = ""
-    
+
     if not os.path.exists(data_folder):
         print(f"Error: {data_folder} folder not found.")
         return all_lyrics
-    
-    for filename in os.listdir(data_folder):
-        if filename.endswith((".txt", ".md")):
-            filepath = os.path.join(data_folder, filename)
-            try:
-                with open(filepath, 'r', encoding='utf-8') as file:
-                    all_lyrics += file.read() + "\n"
-            except Exception as e:
-                print(f"Error reading {filename}: {e}")
-    
+
+    filepath = os.path.join(data_folder, "singalongsong.txt")
+    if not os.path.isfile(filepath):
+        print(f"Error: {filepath} not found.")
+        return all_lyrics
+
+    try:
+        with open(filepath, 'r', encoding='utf-8') as file:
+            all_lyrics = file.read()
+    except Exception as e:
+        print(f"Error reading singalongsong.txt: {e}")
+
     return all_lyrics
 
 def analyze_lyrics(lyrics, top_n=10):
@@ -53,4 +55,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-    stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'is', 'was', 'are', 'be', 'been', 'have', 'has', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'of', 'it', 'you', 'i', 'me', 'my', 'we', 'he', 'she', 'that', 'this', 'your', 'with', 'from', 'as', 'by', 'if', 'not', 'so', 'also', 'been', 'no', 'yes'}
+
+print("Running from:", os.getcwd())
