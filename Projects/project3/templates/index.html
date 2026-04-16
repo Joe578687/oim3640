@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}MBTA Stop Finder — Search{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <h1>Find your nearest<br /><em>T stop</em></h1>
+    <p class="hero-sub">Enter any place in Greater Boston and we'll find the closest MBTA station.</p>
+  </div>
+
+  <div class="search-card">
+    {% if error %}
+    <div class="alert alert-error" role="alert">
+      <span class="alert-icon">⚠</span> {{ error }}
+    </div>
+    {% endif %}
+
+    <form action="/nearest" method="POST" class="search-form">
+      <label for="place_name" class="form-label">Where are you going?</label>
+      <div class="input-row">
+        <input
+          type="text"
+          id="place_name"
+          name="place_name"
+          class="form-input"
+          placeholder="e.g. Fenway Park, Boston Common…"
+          autocomplete="off"
+          required
+        />
+        <button type="submit" class="btn-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          Find Stop
+        </button>
+      </div>
+    </form>
+
+    <ul class="quick-links">
+      <li>Try:</li>
+      {% for place in ["Boston Common", "Fenway Park", "MIT Campus", "Quincy Market"] %}
+      <li>
+        <button class="quick-btn" onclick="document.getElementById('place_name').value='{{ place }}'">
+          {{ place }}
+        </button>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<!-- decorative Boston T map lines -->
+<div class="bg-lines" aria-hidden="true">
+  <div class="line red"></div>
+  <div class="line green"></div>
+  <div class="line orange"></div>
+  <div class="line blue"></div>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}MBTA Stop Finder — Results{% endblock %}
+
+{% block content %}
+<section class="result-page">
+
+  <div class="result-card">
+    <div class="result-header">
+      <p class="result-query">Results for <strong>{{ place_name }}</strong></p>
+      <h2 class="result-stop">🚇 3 Nearest Stops</h2>
+    </div>
+
+    <div class="result-detail">
+      <div class="detail-row">
+        <span class="detail-label">Location searched</span>
+        <span class="detail-value">{{ place_name }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Coordinates</span>
+        <span class="detail-value">{{ "%.4f"|format(lat) }}, {{ "%.4f"|format(lng) }}</span>
+      </div>
+    </div>
+
+    <br>
+
+    {% for station in nearest_stations %}
+    <div class="result-detail" style="margin-bottom: 1rem;">
+      <div class="detail-row">
+        <span class="detail-label">Stop {{ loop.index }}</span>
+        <span class="detail-value">{{ station.name }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Wheelchair access</span>
+        <span class="detail-value">{{ "Yes" if station.accessible else "No" }}</span>
+      </div>
+    </div>
+    {% endfor %}
+
+    <a href="/" class="btn-back">← Search Again</a>
+  </div>
+
+  <div id="map" class="result-map"></div>
+
+</section>
+
+<script>
+  mapboxgl.accessToken = "{{ mapbox_token }}";
+
+  const map = new mapboxgl.Map({
+    container: "map",
+    style: "mapbox://styles/mapbox/dark-v11",
+    center: [{{ lng }}, {{ lat }}],
+    zoom: 14,
+  });
+
+  map.addControl(new mapboxgl.NavigationControl(), "top-right");
+
+  new mapboxgl.Marker({ color: "#e63946" })
+    .setLngLat([{{ lng }}, {{ lat }}])
+    .setPopup(
+      new mapboxgl.Popup({ offset: 25 }).setHTML(
+        "<strong>{{ place_name }}</strong><br/>Your searched location"
+      )
+    )
+    .addTo(map);
+
+  {% for station in nearest_stations %}
+  new mapboxgl.Marker({ color: "#39b54a" })
+    .setLngLat([{{ station.lng }}, {{ station.lat }}])
+    .setPopup(
+      new mapboxgl.Popup({ offset: 25 }).setHTML(
+        "<strong>{{ station.name }}</strong><br/>Wheelchair access: {{ 'Yes' if station.accessible else 'No' }}"
+      )
+    )
+    .addTo(map);
+  {% endfor %}
+</script>
+{% endblock %}
