@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form>
+<input name="player1" placeholder="Player 1 ID">
+<input name="player2" placeholder="Player 2 ID">
+<button>Compare</button>
+</form>
+
+{% if data %}
+<p>Player 1 Win Rate: {{data.player1.win_rate}}%</p>
+<p>Player 2 Win Rate: {{data.player2.win_rate}}%</p>
+{% endif %}
+
+{% endblock %}

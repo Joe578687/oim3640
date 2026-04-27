@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tennis Men's Singles Explorer</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin:40px;
+            background:#f7f7f7;
+        }
+
+        h1{
+            color:#1d3557;
+        }
+
+        a{
+            color:#0066cc;
+            text-decoration:none;
+        }
+
+        a:hover{
+            text-decoration:underline;
+        }
+
+        input{
+            padding:8px;
+            width:250px;
+        }
+
+        button{
+            padding:8px 14px;
+            background:#1d3557;
+            color:white;
+            border:none;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#457b9d;
+        }
+
+        table{
+            border-collapse:collapse;
+            width:100%;
+            background:white;
+            margin-top:20px;
+        }
+
+        th{
+            background:#1d3557;
+            color:white;
+        }
+
+        th, td{
+            padding:10px;
+            border:1px solid #ddd;
+            text-align:left;
+        }
+
+        .container{
+            max-width:1000px;
+            margin:auto;
+            background:white;
+            padding:30px;
+            border-radius:8px;
+            box-shadow:0 0 10px rgba(0,0,0,.08);
+        }
+
+        .nav-links{
+            margin-top:20px;
+        }
+
+        .nav-links a{
+            display:block;
+            margin-bottom:10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Tennis Men's Singles Explorer</h1>
+
+    <form action="/" method="get">
+        <input
+            type="text"
+            name="q"
+            placeholder="Search player (e.g. Djokovic)"
+            value="{{ query if query else '' }}"
+        >
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="nav-links">
+        <a href="/compare">Compare Players</a>
+        <a href="/tournaments">View Tournaments</a>
+    </div>
+
+    <hr>
+
+    {% block content %}
+    {% endblock %}
+
+</div>
+
+</body>
+</html>

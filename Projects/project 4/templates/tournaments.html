@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Tournaments / Competitions</h2>
+
+<p>This page shows tennis competitions from the Sportradar Tennis API.</p>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Gender</th>
+        <th>ID</th>
+    </tr>
+
+    {% for t in tournaments %}
+    <tr>
+        <td>{{ t.get("name", "N/A") }}</td>
+        <td>{{ t.get("type", "N/A") }}</td>
+        <td>{{ t.get("gender", "N/A") }}</td>
+        <td>{{ t.get("id", "N/A") }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/">Back to Search</a>
+
+{% endblock %}

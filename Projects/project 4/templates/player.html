@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Player Match Summary</h2>
+
+<p><strong>Wins:</strong> {{ wins }}</p>
+<p><strong>Losses:</strong> {{ losses }}</p>
+<p><strong>Win Rate:</strong> {{ win_rate }}%</p>
+
+{% if win_chart %}
+<img src="data:image/png;base64,{{ win_chart }}" width="400">
+{% endif %}
+
+{% if opponent_chart %}
+<img src="data:image/png;base64,{{ opponent_chart }}" width="500">
+{% endif %}
+
+<h3>All Available Match Summaries From API</h3>
+
+<table>
+<tr>
+<th>Date</th>
+<th>Tournament</th>
+<th>Category</th>
+<th>Round</th>
+<th>Surface</th>
+<th>Opponent</th>
+<th>Score</th>
+<th>Venue</th>
+<th>Result</th>
+</tr>
+
+{% for m in matches %}
+
+{% set event = m.get("sport_event",{}) %}
+{% set status = m.get("sport_event_status",{}) %}
+{% set context = event.get("sport_event_context",{}) %}
+{% set competition = context.get("competition",{}) %}
+{% set round = context.get("round",{}) %}
+{% set venue = event.get("venue",{}) %}
+{% set competitors = event.get("competitors",[]) %}
+
+<tr>
+
+<td>{{ event.get("start_time","N/A")[:10] }}</td>
+
+<td>{{ competition.get("name","N/A") }}</td>
+
+<td>{{ competition.get("category",{}).get("name","N/A") }}</td>
+
+<td>{{ round.get("name","N/A") }}</td>
+
+<td>{{ context.get("groups","N/A") }}</td>
+
+<td>
+{% for c in competitors %}
+{% if c.get("id") != player_id %}
+{{ c.get("name","Unknown") }}
+{% endif %}
+{% endfor %}
+</td>
+
+<td>
+{{ status.get("home_score","-") }}
+-
+{{ status.get("away_score","-") }}
+</td>
+
+<td>
+{{ venue.get("name","N/A") }}
+</td>
+
+<td>
+{% if status.get("winner_id")==player_id %}
+Win
+{% else %}
+Loss
+{% endif %}
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+<a href="/">Back to Search</a>
+
+{% endblock %}

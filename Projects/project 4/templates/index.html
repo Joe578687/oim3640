@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if query %}
+    <h2>Search Results for "{{ query }}"</h2>
+
+    {% if players %}
+        <ul>
+        {% for p in players %}
+            <li>
+                <a href="/player/{{ p.get('id') }}">
+                    {{ p.get('name') }}
+                </a>
+                {% if p.get('rank') %}
+                    — Rank: {{ p.get('rank') }}
+                {% endif %}
+                {% if p.get('points') %}
+                    — Points: {{ p.get('points') }}
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No players found. Try a current ATP player like Djokovic, Alcaraz, Sinner, Medvedev, or Zverev.</p>
+    {% endif %}
+{% else %}
+    <p>Search for a men’s tennis player to see match history, win rate, and recent opponents.</p>
+{% endif %}
+
+{% endblock %}
