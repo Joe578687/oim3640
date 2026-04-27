@@ -2,15 +2,65 @@
 
 {% block content %}
 
-<form>
-<input name="player1" placeholder="Player 1 ID">
-<input name="player2" placeholder="Player 2 ID">
-<button>Compare</button>
+<h2>Compare Two Players</h2>
+
+<p>Enter two player names to compare their available API match records.</p>
+
+<form action="/compare" method="get">
+    <input
+        type="text"
+        name="player1"
+        placeholder="Player 1 name, e.g. Djokovic"
+        value="{{ player1_name if player1_name else '' }}"
+    >
+
+    <input
+        type="text"
+        name="player2"
+        placeholder="Player 2 name, e.g. Alcaraz"
+        value="{{ player2_name if player2_name else '' }}"
+    >
+
+    <button type="submit">Compare</button>
 </form>
 
-{% if data %}
-<p>Player 1 Win Rate: {{data.player1.win_rate}}%</p>
-<p>Player 2 Win Rate: {{data.player2.win_rate}}%</p>
+{% if error %}
+    <p style="color:red;"><strong>{{ error }}</strong></p>
 {% endif %}
+
+{% if data %}
+
+<h3>Comparison Results</h3>
+
+<table>
+    <tr>
+        <th>Player</th>
+        <th>Wins</th>
+        <th>Losses</th>
+        <th>Win Rate</th>
+        <th>Profile</th>
+    </tr>
+
+    <tr>
+        <td>{{ data.player1.name }}</td>
+        <td>{{ data.player1.wins }}</td>
+        <td>{{ data.player1.losses }}</td>
+        <td>{{ data.player1.win_rate }}%</td>
+        <td><a href="/player/{{ data.player1.id }}">View Player</a></td>
+    </tr>
+
+    <tr>
+        <td>{{ data.player2.name }}</td>
+        <td>{{ data.player2.wins }}</td>
+        <td>{{ data.player2.losses }}</td>
+        <td>{{ data.player2.win_rate }}%</td>
+        <td><a href="/player/{{ data.player2.id }}">View Player</a></td>
+    </tr>
+</table>
+
+{% endif %}
+
+<br>
+<a href="/">Back to Search</a>
 
 {% endblock %}

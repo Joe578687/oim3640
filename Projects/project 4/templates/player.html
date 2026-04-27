@@ -4,9 +4,22 @@
 
 <h2>Player Match Summary</h2>
 
-<p><strong>Wins:</strong> {{ wins }}</p>
-<p><strong>Losses:</strong> {{ losses }}</p>
-<p><strong>Win Rate:</strong> {{ win_rate }}%</p>
+<div class="stats-card">
+    <div class="stat-box">
+        <strong>Wins</strong>
+        <span>{{ wins }}</span>
+    </div>
+
+    <div class="stat-box">
+        <strong>Losses</strong>
+        <span>{{ losses }}</span>
+    </div>
+
+    <div class="stat-box">
+        <strong>Win Rate</strong>
+        <span>{{ win_rate }}%</span>
+    </div>
+</div>
 
 {% if win_chart %}
 <img src="data:image/png;base64,{{ win_chart }}" width="400">
@@ -19,70 +32,71 @@
 <h3>All Available Match Summaries From API</h3>
 
 <table>
-<tr>
-<th>Date</th>
-<th>Tournament</th>
-<th>Category</th>
-<th>Round</th>
-<th>Surface</th>
-<th>Opponent</th>
-<th>Score</th>
-<th>Venue</th>
-<th>Result</th>
-</tr>
+    <tr>
+        <th>Date</th>
+        <th>Tournament</th>
+        <th>Category</th>
+        <th>Round</th>
+        <th>Surface / Group</th>
+        <th>Opponent</th>
+        <th>Score</th>
+        <th>Venue</th>
+        <th>Result</th>
+    </tr>
 
-{% for m in matches %}
+    {% for m in matches %}
 
-{% set event = m.get("sport_event",{}) %}
-{% set status = m.get("sport_event_status",{}) %}
-{% set context = event.get("sport_event_context",{}) %}
-{% set competition = context.get("competition",{}) %}
-{% set round = context.get("round",{}) %}
-{% set venue = event.get("venue",{}) %}
-{% set competitors = event.get("competitors",[]) %}
+    {% set event = m.get("sport_event", {}) %}
+    {% set status = m.get("sport_event_status", {}) %}
+    {% set context = event.get("sport_event_context", {}) %}
+    {% set competition = context.get("competition", {}) %}
+    {% set category = context.get("category", {}) %}
+    {% set round = context.get("round", {}) %}
+    {% set venue = event.get("venue", {}) %}
+    {% set competitors = event.get("competitors", []) %}
+    {% set groups = context.get("groups", []) %}
 
-<tr>
+    <tr>
+        <td>{{ event.get("start_time", "N/A")[:10] }}</td>
 
-<td>{{ event.get("start_time","N/A")[:10] }}</td>
+        <td>{{ competition.get("name", "N/A") }}</td>
 
-<td>{{ competition.get("name","N/A") }}</td>
+        <td>{{ category.get("name", "N/A") }}</td>
 
-<td>{{ competition.get("category",{}).get("name","N/A") }}</td>
+        <td>{{ round.get("name", "N/A") }}</td>
 
-<td>{{ round.get("name","N/A") }}</td>
+        <td>
+            {% if groups %}
+                {{ groups[0].get("name", "N/A") }}
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
 
-<td>{{ context.get("groups","N/A") }}</td>
+        <td>
+            {% for c in competitors %}
+                {% if c.get("id") != player_id %}
+                    {{ c.get("name", "Unknown") }}
+                {% endif %}
+            {% endfor %}
+        </td>
 
-<td>
-{% for c in competitors %}
-{% if c.get("id") != player_id %}
-{{ c.get("name","Unknown") }}
-{% endif %}
-{% endfor %}
-</td>
+        <td>
+            {{ status.get("home_score", "-") }} - {{ status.get("away_score", "-") }}
+        </td>
 
-<td>
-{{ status.get("home_score","-") }}
--
-{{ status.get("away_score","-") }}
-</td>
+        <td>{{ venue.get("name", "N/A") }}</td>
 
-<td>
-{{ venue.get("name","N/A") }}
-</td>
+        <td>
+            {% if status.get("winner_id") == player_id %}
+                Win
+            {% else %}
+                Loss
+            {% endif %}
+        </td>
+    </tr>
 
-<td>
-{% if status.get("winner_id")==player_id %}
-Win
-{% else %}
-Loss
-{% endif %}
-</td>
-
-</tr>
-
-{% endfor %}
-
+    {% endfor %}
 </table>
 
 <br>

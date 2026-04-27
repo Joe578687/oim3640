@@ -4,108 +4,220 @@
     <title>Tennis Men's Singles Explorer</title>
 
     <style>
-        body{
-            font-family: Arial, sans-serif;
-            margin:40px;
-            background:#f7f7f7;
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2f7, #f8fafc);
+            color: #1f2937;
         }
 
-        h1{
-            color:#1d3557;
+        .container {
+            max-width: 1150px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 40px 48px;
+            border-radius: 18px;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
         }
 
-        a{
-            color:#0066cc;
-            text-decoration:none;
+        h1 {
+            font-size: 42px;
+            margin-bottom: 8px;
+            color: #0f274d;
+            letter-spacing: -1px;
         }
 
-        a:hover{
-            text-decoration:underline;
+        h2 {
+            margin-top: 30px;
+            color: #111827;
+            font-size: 28px;
         }
 
-        input{
-            padding:8px;
-            width:250px;
+        h3 {
+            margin-top: 32px;
+            color: #0f274d;
         }
 
-        button{
-            padding:8px 14px;
-            background:#1d3557;
-            color:white;
-            border:none;
-            cursor:pointer;
+        p {
+            line-height: 1.6;
+            font-size: 16px;
         }
 
-        button:hover{
-            background:#457b9d;
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 28px;
         }
 
-        table{
-            border-collapse:collapse;
-            width:100%;
-            background:white;
-            margin-top:20px;
+        form {
+            display: flex;
+            gap: 12px;
+            margin: 26px 0;
+            flex-wrap: wrap;
         }
 
-        th{
-            background:#1d3557;
-            color:white;
+        input {
+            padding: 13px 15px;
+            width: 320px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
         }
 
-        th, td{
-            padding:10px;
-            border:1px solid #ddd;
-            text-align:left;
+        input:focus {
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
         }
 
-        .container{
-            max-width:1000px;
-            margin:auto;
-            background:white;
-            padding:30px;
-            border-radius:8px;
-            box-shadow:0 0 10px rgba(0,0,0,.08);
+        button {
+            padding: 13px 22px;
+            background: #0f274d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
         }
 
-        .nav-links{
-            margin-top:20px;
+        button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
         }
 
-        .nav-links a{
-            display:block;
-            margin-bottom:10px;
+        .nav-links {
+            display: flex;
+            gap: 14px;
+            margin: 22px 0 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            padding: 10px 16px;
+            background: #f1f5f9;
+            color: #0f274d;
+            border-radius: 999px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background: #e2e8f0;
+            margin: 28px 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background: white;
+            margin-top: 22px;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        th {
+            background: #0f274d;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        a {
+            color: #1d4ed8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 20px 20px 20px 0;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        .stats-card {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin: 24px 0;
+        }
+
+        .stat-box {
+            background: #f8fafc;
+            padding: 18px 22px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            min-width: 140px;
+        }
+
+        .stat-box strong {
+            display: block;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .stat-box span {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f274d;
         }
     </style>
-
 </head>
 
 <body>
+    <div class="container">
+        <h1>Tennis Men's Singles Explorer</h1>
+        <p class="subtitle">Search players, compare performance, and explore tournament data using the Sportradar Tennis API.</p>
 
-<div class="container">
+        <form action="/" method="get">
+            <input
+                type="text"
+                name="q"
+                placeholder="Search player, e.g. Djokovic"
+                value="{{ query if query else '' }}"
+            >
+            <button type="submit">Search</button>
+        </form>
 
-    <h1>Tennis Men's Singles Explorer</h1>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/compare">Compare Players</a>
+            <a href="/tournaments">View Tournaments</a>
+        </div>
 
-    <form action="/" method="get">
-        <input
-            type="text"
-            name="q"
-            placeholder="Search player (e.g. Djokovic)"
-            value="{{ query if query else '' }}"
-        >
-        <button type="submit">Search</button>
-    </form>
+        <hr>
 
-    <div class="nav-links">
-        <a href="/compare">Compare Players</a>
-        <a href="/tournaments">View Tournaments</a>
+        {% block content %}
+        {% endblock %}
     </div>
-
-    <hr>
-
-    {% block content %}
-    {% endblock %}
-
-</div>
-
 </body>
 </html>

@@ -4,25 +4,31 @@
 
 <h2>Tournaments / Competitions</h2>
 
-<p>This page shows tennis competitions from the Sportradar Tennis API.</p>
+<p>This page groups tennis competitions from the Sportradar Tennis API by location or category.</p>
 
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Gender</th>
-        <th>ID</th>
-    </tr>
+{% for country, tournaments in grouped_tournaments.items() %}
 
-    {% for t in tournaments %}
-    <tr>
-        <td>{{ t.get("name", "N/A") }}</td>
-        <td>{{ t.get("type", "N/A") }}</td>
-        <td>{{ t.get("gender", "N/A") }}</td>
-        <td>{{ t.get("id", "N/A") }}</td>
-    </tr>
-    {% endfor %}
-</table>
+    <h3>{{ country }}</h3>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Gender</th>
+            <th>ID</th>
+        </tr>
+
+        {% for t in tournaments %}
+        <tr>
+            <td>{{ t.get("name", "N/A") }}</td>
+            <td>{{ t.get("type", "N/A") }}</td>
+            <td>{{ t.get("gender", "N/A") }}</td>
+            <td>{{ t.get("id", "N/A") }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endfor %}
 
 <br>
 <a href="/">Back to Search</a>

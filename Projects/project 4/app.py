@@ -54,45 +54,87 @@ def player_detail(player_id):
 
 @app.route("/compare")
 def compare():
-    player1 = request.args.get("player1", "")
-    player2 = request.args.get("player2", "")
+    player1_name = request.args.get("player1", "")
+    player2_name = request.args.get("player2", "")
 
     data = None
+    error = None
 
-    if player1 and player2:
-        def calculate_record(player_id):
-            matches = get_player_matches(player_id)
-            wins = 0
-            losses = 0
+    if player1_name and player2_name:
+        player1_results = search_players(player1_name)
+        player2_results = search_players(player2_name)
 
-            for match in matches:
-                winner_id = match.get("sport_event_status", {}).get("winner_id", "")
+        if not player1_results or not player2_results:
+            error = "One or both players could not be found. Try using last names like Djokovic, Alcaraz, Sinner, or Zverev."
+        else:
+            player1 = player1_results[0]
+            player2 = player2_results[0]
 
-                if winner_id == player_id:
-                    wins += 1
-                elif winner_id:
-                    losses += 1
+            def calculate_record(player):
+                player_id = player["id"]
+                matches = get_player_matches(player_id)
 
-            total = wins + losses
-            win_rate = round((wins / total) * 100, 2) if total > 0 else 0
-            return wins, losses, win_rate
+                wins = 0
+                losses = 0
 
-        p1_wins, p1_losses, p1_rate = calculate_record(player1)
-        p2_wins, p2_losses, p2_rate = calculate_record(player2)
+                for match in matches:
+                    winner_id = match.get("sport_event_status", {}).get("winner_id", "")
 
-        data = {
-            "player1": {"id": player1, "wins": p1_wins, "losses": p1_losses, "win_rate": p1_rate},
-            "player2": {"id": player2, "wins": p2_wins, "losses": p2_losses, "win_rate": p2_rate}
-        }
+                    if winner_id == player_id:
+                        wins += 1
+                    elif winner_id:
+                        losses += 1
 
-    return render_template("compare.html", data=data)
+                total = wins + losses
+                win_rate = round((wins / total) * 100, 2) if total > 0 else 0
+
+                return {
+                    "name": player.get("name", "Unknown"),
+                    "id": player_id,
+                    "wins": wins,
+                    "losses": losses,
+                    "win_rate": win_rate
+                }
+
+            data = {
+                "player1": calculate_record(player1),
+                "player2": calculate_record(player2)
+            }
+
+    return render_template(
+        "compare.html",
+        data=data,
+        error=error,
+        player1_name=player1_name,
+        player2_name=player2_name
+    )
 
 
 @app.route("/tournaments")
 def tournaments():
     year = request.args.get("year", "")
     tournaments = get_tournaments(year=year)
-    return render_template("tournaments.html", year=year, tournaments=tournaments)
+
+    grouped_tournaments = {}
+
+    for t in tournaments:
+        group_name = (
+            t.get("country")
+            or t.get("category", {}).get("name")
+            or t.get("gender")
+            or "Other / Unknown"
+        )
+
+        if group_name not in grouped_tournaments:
+            grouped_tournaments[group_name] = []
+
+        grouped_tournaments[group_name].append(t)
+
+    return render_template(
+        "tournaments.html",
+        year=year,
+        grouped_tournaments=grouped_tournaments
+    )
 
 
 if __name__ == "__main__":
